@@ -1,0 +1,1 @@
+BudgetApp skeleton (backend + android). See backend/ and android/ folders. Build with docker-compose for quick start.
