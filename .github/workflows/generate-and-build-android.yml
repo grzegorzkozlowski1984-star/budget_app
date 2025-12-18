@@ -1,4 +1,4 @@
-name: Build Android APK (Template)
+name: Build Android APK
 
 on:
   workflow_dispatch:
@@ -23,16 +23,9 @@ jobs:
           echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> $GITHUB_ENV
           echo "PATH=$PATH:/usr/local/lib/android/sdk/platform-tools" >> $GITHUB_ENV
 
-
-      - name: Download Android template project
-        run: |
-          rm -rf android
-          git clone https://github.com/android/compose-samples.git android
-          cd android/Jetchat
-
       - name: Build Debug APK
         run: |
-          cd android/Jetchat
+          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -40,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: budget-app-apk
-          path: android/Jetchat/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/debug/*.apk
