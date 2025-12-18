@@ -1,0 +1,106 @@
+name: Generate and Build Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Download Android command line tools
+        run: |
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          cd $HOME/android-sdk/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip commandlinetools-linux-11076708_latest.zip
+          mv cmdline-tools latest
+
+      - name: Set ANDROID_HOME
+        run: |
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "PATH=$PATH:$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_ENV
+
+      - name: Accept licenses and install SDK
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Generate Android project
+        run: |
+          mkdir android
+          cd android
+          sdkmanager --install "cmdline-tools;latest"
+          yes | sdkmanager --licenses
+          curl -s https://get.sdkman.io | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install gradle 8.4
+
+          gradle init \
+            --type basic \
+            --dsl kotlin \
+            --project-name BudgetApp \
+            --package com.example.budgetapp
+
+      - name: Create minimal Android app
+        run: |
+          cd android
+          cat > settings.gradle.kts <<EOF
+          rootProject.name = "BudgetApp"
+          include(":app")
+          EOF
+
+          mkdir -p app/src/main/java/com/example/budgetapp
+          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/values
+
+          cat > app/build.gradle.kts <<EOF
+          plugins {
+              id("com.android.application")
+              kotlin("android")
+          }
+
+          android {
+              namespace = "com.example.budgetapp"
+              compileSdk = 34
+
+              defaultConfig {
+                  applicationId = "com.example.budgetapp"
+                  minSdk = 26
+                  targetSdk = 34
+                  versionCode = 1
+                  versionName = "1.0"
+              }
+
+              buildTypes {
+                  release {
+                      isMinifyEnabled = false
+                  }
+              }
+          }
+
+          dependencies {
+              implementation("androidx.core:core-ktx:1.12.0")
+              implementation("androidx.appcompat:appcompat:1.6.1")
+          }
+          EOF
+
+      - name: Build APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: budget-app-apk
+          path: android/app/build/outputs/apk/debug/*.apk
