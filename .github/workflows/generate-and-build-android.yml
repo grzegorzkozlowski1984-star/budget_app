@@ -1,4 +1,4 @@
-name: Generate and Build Android APK
+name: Build Android APK (Template)
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Download Android command line tools
+      - name: Download Android SDK
         run: |
           mkdir -p $HOME/android-sdk/cmdline-tools
           cd $HOME/android-sdk/cmdline-tools
@@ -30,77 +30,25 @@ jobs:
           echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
           echo "PATH=$PATH:$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools" >> $GITHUB_ENV
 
-      - name: Accept licenses and install SDK
+      - name: Install SDK packages
         run: |
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Generate Android project
+      - name: Download Android template project
         run: |
-          mkdir -p android
-          cd android
-          sdkmanager --install "cmdline-tools;latest"
-          yes | sdkmanager --licenses
-          curl -s https://get.sdkman.io | bash
-          source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install gradle 8.4
+          rm -rf android
+          git clone https://github.com/android/compose-samples.git android
+          cd android/Jetchat
 
-          gradle init \
-            --type basic \
-            --dsl kotlin \
-            --project-name BudgetApp \
-            --package com.example.budgetapp
-
-      - name: Create minimal Android app
+      - name: Build Debug APK
         run: |
-          cd android
-          cat > settings.gradle.kts <<EOF
-          rootProject.name = "BudgetApp"
-          include(":app")
-          EOF
-
-          mkdir -p app/src/main/java/com/example/budgetapp
-          mkdir -p app/src/main/res/layout
-          mkdir -p app/src/main/res/values
-
-          cat > app/build.gradle.kts <<EOF
-          plugins {
-              id("com.android.application")
-              kotlin("android")
-          }
-
-          android {
-              namespace = "com.example.budgetapp"
-              compileSdk = 34
-
-              defaultConfig {
-                  applicationId = "com.example.budgetapp"
-                  minSdk = 26
-                  targetSdk = 34
-                  versionCode = 1
-                  versionName = "1.0"
-              }
-
-              buildTypes {
-                  release {
-                      isMinifyEnabled = false
-                  }
-              }
-          }
-
-          dependencies {
-              implementation("androidx.core:core-ktx:1.12.0")
-              implementation("androidx.appcompat:appcompat:1.6.1")
-          }
-          EOF
-
-      - name: Build APK
-        run: |
-          cd android
+          cd android/Jetchat
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: budget-app-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/Jetchat/app/build/outputs/apk/debug/*.apk
