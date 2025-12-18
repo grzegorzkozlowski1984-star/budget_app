@@ -37,7 +37,7 @@ jobs:
 
       - name: Generate Android project
         run: |
-          mkdir android
+          mkdir -p android
           cd android
           sdkmanager --install "cmdline-tools;latest"
           yes | sdkmanager --licenses
