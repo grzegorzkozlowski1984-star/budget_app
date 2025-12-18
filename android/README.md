@@ -1,1 +1,0 @@
-Android starter app (minimal). Open in Android Studio and run on emulator. Backend assumed at http://10.0.2.2:3000 for emulator.
