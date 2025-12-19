@@ -57,47 +57,18 @@ class NavActivity : AppCompatActivity() {
             ComposeView(this).apply {
                 consumeWindowInsets = false
                 setContent {
-                    val drawerState = rememberDrawerState(initialValue = Closed)
-                    val drawerOpen by viewModel.drawerShouldBeOpened
-                        .collectAsStateWithLifecycle()
+    JetchatTheme {
+        androidx.navigation.compose.NavHost(
+            navController = androidx.navigation.compose.rememberNavController(),
+            startDestination = "categories"
+        ) {
+            androidx.navigation.compose.composable("categories") {
+                com.example.compose.jetchat.ui.categories.CategoriesScreen()
+            }
+        }
+    }
+}
 
-                    var selectedMenu by remember { mutableStateOf("composers") }
-                    if (drawerOpen) {
-                        // Open drawer and reset state in VM.
-                        LaunchedEffect(Unit) {
-                            // wrap in try-finally to handle interruption whiles opening drawer
-                            try {
-                                drawerState.open()
-                            } finally {
-                                viewModel.resetOpenDrawerAction()
-                            }
-                        }
-                    }
-
-                    val scope = rememberCoroutineScope()
-
-                    JetchatDrawer(
-                        drawerState = drawerState,
-                        selectedMenu = selectedMenu,
-                        onChatClicked = {
-                            findNavController().popBackStack(R.id.nav_home, false)
-                            scope.launch {
-                                drawerState.close()
-                            }
-                            selectedMenu = it
-                        },
-                        onProfileClicked = {
-                            val bundle = bundleOf("userId" to it)
-                            findNavController().navigate(R.id.nav_profile, bundle)
-                            scope.launch {
-                                drawerState.close()
-                            }
-                            selectedMenu = it
-                        },
-                    ) {
-                        AndroidViewBinding(ContentMainBinding::inflate)
-                    }
-                }
             },
         )
     }
