@@ -32,6 +32,14 @@
             tools:node="merge">
             <intent-filter tools:node="removeAll" />
         </activity>
+        <activity
+    android:name=".NavActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
 
     </application>
 </manifest>
