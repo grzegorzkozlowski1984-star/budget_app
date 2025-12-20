@@ -4,7 +4,9 @@ import androidx.room.TypeConverter
 import java.math.BigDecimal
 import java.time.LocalDate
 
-class Converters {
+class TypeConverters {
+
+    // ---------- BigDecimal ----------
 
     @TypeConverter
     fun bigDecimalToString(value: BigDecimal?): String? =
@@ -13,6 +15,8 @@ class Converters {
     @TypeConverter
     fun stringToBigDecimal(value: String?): BigDecimal? =
         value?.let { BigDecimal(it) }
+
+    // ---------- LocalDate ----------
 
     @TypeConverter
     fun localDateToString(date: LocalDate?): String? =
