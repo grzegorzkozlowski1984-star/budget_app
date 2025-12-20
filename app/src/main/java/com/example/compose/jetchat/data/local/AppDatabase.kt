@@ -3,9 +3,7 @@ package com.example.compose.jetchat.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.compose.jetchat.data.local.entity.CategoryEntity
-import com.example.compose.jetchat.data.local.entity.ExpenseItemEntity
-import com.example.compose.jetchat.data.local.entity.TransactionEntity
+import com.example.compose.jetchat.data.local.entity.*
 
 @Database(
     entities = [
@@ -13,11 +11,12 @@ import com.example.compose.jetchat.data.local.entity.TransactionEntity
         TransactionEntity::class,
         ExpenseItemEntity::class
     ],
-    version = 1,
-    exportSchema = false
+    version = 1
 )
-@TypeConverters(TypeConverters::class)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    // DAO dodamy w kolejnym kroku
+    abstract fun categoryDao(): CategoryDao
+    abstract fun transactionDao(): TransactionDao
+    abstract fun expenseItemDao(): ExpenseItemDao
 }
