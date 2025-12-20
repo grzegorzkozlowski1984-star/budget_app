@@ -1,31 +1,26 @@
 package com.example.compose.jetchat.data.local.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "categories")
+@Entity(
+    tableName = "categories",
+    indices = [
+        Index("parentId")
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = CategoryEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.RESTRICT
+        )
+    ]
+)
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-
+    val id: Long = 0,
     val name: String,
-
-    /**
-     * null → kategoria główna
-     * != null → podkategoria
-     */
-    val parentId: Long? = null,
-
-    /**
-     * 1 = główna
-     * 2 = podkategoria
-     * 3 = pod-podkategoria
-     */
-    val level: Int,
-
-    /**
-     * true = systemowa (np. "Inne"), nieusuwalna
-     */
+    val parentId: Long?,
+    val order: Int,
     val isSystem: Boolean = false
 )
-
