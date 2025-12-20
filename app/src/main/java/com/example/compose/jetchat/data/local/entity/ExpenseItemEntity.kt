@@ -1,9 +1,7 @@
 package com.example.compose.jetchat.data.local.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import java.math.BigDecimal
 
 @Entity(
     tableName = "expense_items",
@@ -28,20 +26,9 @@ import androidx.room.PrimaryKey
 )
 data class ExpenseItemEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-
+    val id: Long = 0,
     val transactionId: Long,
-
     val categoryId: Long,
-
-    /**
-     * Kwota przypisana do tej kategorii
-     */
-    val amount: Double,
-
-    /**
-     * Opcjonalna notatka (np. "czekolada Milka")
-     */
-    val note: String? = null
+    val amount: BigDecimal,
+    val note: String?
 )
-
