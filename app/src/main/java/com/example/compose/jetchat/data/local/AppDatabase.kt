@@ -13,7 +13,7 @@ import com.example.compose.jetchat.data.local.entity.*
     ],
     version = 1
 )
-@TypeConverters(Converters::class)
+@TypeConverters(TypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
