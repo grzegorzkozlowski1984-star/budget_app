@@ -1,27 +1,24 @@
 package com.example.compose.jetchat.data.local
 
 import androidx.room.TypeConverter
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.math.BigDecimal
+import java.time.LocalDate
 
-class TypeConverters {
-
-    @TypeConverter
-    fun fromLocalDateTime(value: LocalDateTime?): Long? {
-        return value
-            ?.atZone(ZoneId.systemDefault())
-            ?.toInstant()
-            ?.toEpochMilli()
-    }
+class Converters {
 
     @TypeConverter
-    fun toLocalDateTime(value: Long?): LocalDateTime? {
-        return value
-            ?.let {
-                Instant.ofEpochMilli(it)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime()
-            }
-    }
+    fun bigDecimalToString(value: BigDecimal?): String? =
+        value?.toPlainString()
+
+    @TypeConverter
+    fun stringToBigDecimal(value: String?): BigDecimal? =
+        value?.let { BigDecimal(it) }
+
+    @TypeConverter
+    fun localDateToString(date: LocalDate?): String? =
+        date?.toString()
+
+    @TypeConverter
+    fun stringToLocalDate(value: String?): LocalDate? =
+        value?.let { LocalDate.parse(it) }
 }
