@@ -1,18 +1,16 @@
 package com.example.compose.jetchat.data.local.dao
 
-import androidx.room.*
-import com.example.compose.jetchat.data.local.entity.CategoryEntity
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.example.compose.jetchat.domain.model.Category
 
 @Dao
 interface CategoryDao {
 
-    @Query("SELECT * FROM categories ORDER BY parentId, `order`")
-    fun observeAll(): Flow<List<CategoryEntity>>
-
     @Insert
-    suspend fun insert(category: CategoryEntity): Long
+    suspend fun insert(category: Category)
 
-    @Delete
-    suspend fun delete(category: CategoryEntity)
+    @Query("SELECT * FROM categories")
+    suspend fun getAll(): List<Category>
 }
