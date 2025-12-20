@@ -10,8 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.jetchat.ui.categories.CategoriesScreen
-import com.example.compose.jetchat.ui.settings.SettingsScreen
-import com.example.compose.jetchat.ui.transactions.TransactionsScreen
 
 class NavActivity : ComponentActivity() {
 
@@ -36,13 +34,8 @@ fun AppRoot() {
                 composable("categories") {
                     CategoriesScreen()
                 }
-                composable("transactions") {
-                    TransactionsScreen()
-                }
-                composable("settings") {
-                    SettingsScreen()
-                }
             }
         }
     }
 }
+
