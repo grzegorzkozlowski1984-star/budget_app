@@ -1,3 +1,4 @@
+package com.example.compose.jetchat.domain.model
 data class ExpenseItem(
     val id: Long,
     val transactionId: Long,
