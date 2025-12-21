@@ -3,14 +3,18 @@ package com.example.compose.jetchat.data.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.compose.jetchat.domain.model.ExpenseItem
+import com.example.compose.jetchat.data.local.entity.ExpenseItemEntity
 
 @Dao
 interface ExpenseItemDao {
 
     @Insert
-    suspend fun insert(item: ExpenseItem)
+    suspend fun insertAll(items: List<ExpenseItemEntity>)
 
-    @Query("SELECT * FROM expense_items")
-    suspend fun getAll(): List<ExpenseItem>
+    @Query("""
+        SELECT SUM(amount) 
+        FROM expense_items 
+        WHERE categoryId = :categoryId
+    """)
+    suspend fun sumForCategory(categoryId: Long): Long?
 }
