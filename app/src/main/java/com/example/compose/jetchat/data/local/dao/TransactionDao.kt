@@ -3,14 +3,14 @@ package com.example.compose.jetchat.data.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.compose.jetchat.domain.model.Transaction
+import com.example.compose.jetchat.data.local.entity.TransactionEntity
 
 @Dao
 interface TransactionDao {
 
     @Insert
-    suspend fun insert(transaction: Transaction)
+    suspend fun insert(transaction: TransactionEntity): Long
 
     @Query("SELECT * FROM transactions")
-    suspend fun getAll(): List<Transaction>
+    suspend fun getAll(): List<TransactionEntity>
 }
