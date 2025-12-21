@@ -16,7 +16,7 @@ interface ExpenseItemDao {
         FROM expense_items 
         WHERE categoryId = :categoryId
     """)
-
+    suspend fun sumForCategory(categoryId: Long): Long?
         @Query(
         """
         SELECT COUNT(*) > 0
@@ -24,6 +24,6 @@ interface ExpenseItemDao {
         WHERE categoryId = :categoryId
         """
     )
-    suspend fun sumForCategory(categoryId: Long): Long?
+    
     suspend fun hasItemsForCategory(categoryId: Long): Boolean
 }
