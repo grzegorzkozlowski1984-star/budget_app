@@ -1,16 +1,13 @@
 package com.example.compose.jetchat.data.local.entity
 
-import androidx.room.*
-import java.math.BigDecimal
-import java.time.LocalDate
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.LocalDateTime
 
-@Entity(
-    tableName = "transactions"
-)
+@Entity(tableName = "transactions")
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val date: LocalDate,
-    val description: String?,
-    val totalAmount: BigDecimal
+    val date: LocalDateTime,
+    val description: String? = null
 )
