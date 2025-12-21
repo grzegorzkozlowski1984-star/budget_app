@@ -109,7 +109,8 @@ private fun ByLabelReport(items: List<com.example.compose.jetchat.data.local.que
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(item.labelName ?: "Brak etykiety")
-                Text(item.total.toString())
+                Text(item.sum.toString())
+
             }
         }
     }
