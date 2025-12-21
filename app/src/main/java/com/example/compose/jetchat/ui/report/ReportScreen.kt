@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.compose.jetchat.data.local.query.*
 
 @Composable
 fun ReportScreen(
@@ -132,7 +133,7 @@ private fun ByLabelAndCategoryReport(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "${item.categoryName}: ${item.total}"
+                    text = "${item.categoryName}: ${item.sum}"
                 )
             }
         }
