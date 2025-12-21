@@ -1,7 +1,6 @@
 package com.example.compose.jetchat.data.local.entity
 
 import androidx.room.*
-import java.math.BigDecimal
 
 @Entity(
     tableName = "expense_items",
@@ -29,6 +28,5 @@ data class ExpenseItemEntity(
     val id: Long = 0,
     val transactionId: Long,
     val categoryId: Long,
-    val amount: BigDecimal,
-    val note: String?
+    val amount: Long // grosze
 )
