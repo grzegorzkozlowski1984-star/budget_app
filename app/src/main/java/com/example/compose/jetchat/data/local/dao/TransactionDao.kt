@@ -13,4 +13,8 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions")
     suspend fun getAll(): List<TransactionEntity>
+    @androidx.room.Transaction
+@Query("SELECT * FROM transactions ORDER BY date DESC")
+suspend fun getAllWithItems(): List<TransactionWithItems>
+
 }
