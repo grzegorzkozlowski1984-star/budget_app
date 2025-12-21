@@ -83,3 +83,57 @@ private fun ReportTypeSelector(
         }
     }
 }
+@Composable
+private fun TotalReport(amount: Double?) {
+    Text(
+        text = "Suma wydatków: ${amount ?: 0.0}",
+        style = MaterialTheme.typography.headlineMedium
+    )
+}
+
+@Composable
+private fun WithoutLabelReport(amount: Double?) {
+    Text(
+        text = "Wydatki bez etykiet: ${amount ?: 0.0}",
+        style = MaterialTheme.typography.headlineMedium
+    )
+}
+@Composable
+private fun ByLabelReport(items: List<com.example.compose.jetchat.data.local.query.ExpenseSumByLabel>) {
+    LazyColumn {
+        items(items) { item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(item.labelName ?: "Brak etykiety")
+                Text(item.total.toString())
+            }
+        }
+    }
+}
+
+@Composable
+private fun ByLabelAndCategoryReport(
+    items: List<com.example.compose.jetchat.data.local.query.ExpenseSumByLabelAndCategory>
+) {
+    LazyColumn {
+        items(items) { item ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Text(
+                    text = item.labelName ?: "Brak etykiety",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "${item.categoryName}: ${item.total}"
+                )
+            }
+        }
+    }
+}
