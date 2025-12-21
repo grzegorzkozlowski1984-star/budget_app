@@ -61,3 +61,25 @@ fun ReportScreen(
         }
     }
 }
+@Composable
+private fun ReportTypeSelector(
+    selected: ReportType,
+    onSelected: (ReportType) -> Unit
+) {
+    Column {
+        Text("Typ raportu", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(8.dp))
+
+        ReportType.values().forEach { type ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = selected == type,
+                    onClick = { onSelected(type) }
+                )
+                Text(text = type.name)
+            }
+        }
+    }
+}
