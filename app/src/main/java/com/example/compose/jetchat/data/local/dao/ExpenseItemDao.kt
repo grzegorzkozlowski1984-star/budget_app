@@ -48,4 +48,23 @@ interface ExpenseItemDao {
     WHERE x.expenseItemId IS NULL
     """)
     suspend fun sumExpensesWithoutLabel(): Double?
+
+    @Query("""
+    SELECT
+        l.id AS labelId,
+        l.name AS labelName,
+        c.id AS categoryId,
+        c.name AS categoryName,
+        SUM(e.amount) AS totalAmount
+    FROM expense_items e
+    JOIN categories c
+        ON c.id = e.categoryId
+    JOIN expense_item_label_cross_ref x
+        ON e.id = x.expenseItemId
+    JOIN labels l
+        ON l.id = x.labelId
+    GROUP BY l.id, c.id
+""")
+suspend fun sumExpensesByLabelAndCategory(): List<ExpenseSumByLabelAndCategory>
+
 }
