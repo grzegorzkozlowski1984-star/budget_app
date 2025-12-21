@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.compose.jetchat.data.local.entity.TransactionEntity
+import com.example.compose.jetchat.data.local.relation.TransactionWithItems
 
 @Dao
 interface TransactionDao {
