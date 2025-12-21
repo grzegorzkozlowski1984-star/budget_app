@@ -4,6 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.compose.jetchat.data.local.entity.ExpenseItemEntity
+import com.example.compose.jetchat.data.local.query.ExpenseSumByLabel
+import com.example.compose.jetchat.data.local.query.ExpenseSumByLabelAndCategory
+
 
 @Dao
 interface ExpenseItemDao {
